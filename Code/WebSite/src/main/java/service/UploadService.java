@@ -15,10 +15,18 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.Part;
 import org.apache.solr.client.solrj.SolrServerException;
 import org.json.simple.parser.ParseException;
+
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import com.ibm.watson.developer_cloud.document_conversion.v1.model.Answers;
-import data.Connector;
+
+import data.ConnectFactory;
+import data.ConnectType;
+import data.IConnect;
+import data.sql.Connector;
 import qa.DocumentConverter;
 import qa.RetrieveAndRankWrapper;
+import res.ResourceManager;
 import wrapper.Document;
 import wrapper.DocumentStatus;
 import wrapper.User;
@@ -31,7 +39,7 @@ public class UploadService extends Service {
 	private User user;
 	private Document document;
 	private Answers answers;
-	
+	private IConnect conn ;
 	/**
 	 * Main constructor
 	 * @param request
@@ -42,6 +50,7 @@ public class UploadService extends Service {
 			HttpServletResponse response) {
 		super(request, response);
 		this.user = user;
+		this.conn = new ConnectFactory().getConnector(ConnectType.MongoDB);
 	}
 
 	/* (non-Javadoc)
@@ -50,7 +59,7 @@ public class UploadService extends Service {
 	@Override
 	public void execute() {
 		RetrieveAndRankWrapper ranker;
-		Connector conn = new Connector();
+	//	Connector conn = new Connector();
 		
 		if (getDocument()) {			
 			if (!conn.addDocument(document))
@@ -61,7 +70,7 @@ public class UploadService extends Service {
 				try {
 					ranker = new RetrieveAndRankWrapper();
 					document.setStatus(
-							ranker.addDocuments(document, answers) ? 
+							ranker.addDocumentswithPatrs(document, answers) ? 
 									DocumentStatus.ACTIVE :
 									DocumentStatus.INACTIVE);
 				} catch (IOException | ParseException |
@@ -79,7 +88,8 @@ public class UploadService extends Service {
 	
 	/**
 	 * Parses the request and obtains the document to add
-	 * @return
+	 * @return boolean
+	 * @author Michel modified by 10/04/2016
 	 */
 	private boolean getDocument() {
 		Part part = null;
@@ -89,6 +99,18 @@ public class UploadService extends Service {
 		wrapper.File file;
 		String fileName = null; //, plainText;
 		byte[] body;
+		
+		//Document configuration load 
+		JsonParser jsonParser = new JsonParser();
+		String doctConfig =  null;
+		try{
+			doctConfig = ResourceManager.getResourceAsText("doctConv","configdocument.json" );
+		}catch(Exception ex){
+			ex.printStackTrace();
+			setResponse(400, getBasicResponseJson(400, ex.getMessage()));
+			return false;
+		}
+		JsonObject jsonConfig = jsonParser.parse(doctConfig).getAsJsonObject();
 		
 		// obtain parts, or halt with error in invalid format
 		try {
@@ -115,9 +137,8 @@ public class UploadService extends Service {
 			// create File instance to invoke conversion
 			f = new File(p.toUri());
 			
-			// extract text
-			answers = d.convertToAnswers(f);
-			//plainText = d.convertToText(f);
+			//get answer from IBM
+			answers = d.convertToAnswers(f, null, jsonConfig );
 			
 			// create document
 			file = new wrapper.File(null, fileName, part.getSize(), 

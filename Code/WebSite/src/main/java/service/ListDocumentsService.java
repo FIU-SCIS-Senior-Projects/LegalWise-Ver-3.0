@@ -5,8 +5,11 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.json.simple.JSONArray;
 
+import data.ConnectFactory;
+import data.ConnectType;
+import data.IConnect;
+import data.sql.Connector;
 import wrapper.Document;
-import data.Connector;
 
 /**
  * Service in charge of fulfilling a list-document request
@@ -36,7 +39,8 @@ public class ListDocumentsService extends Service {
 	@Override
 	public void execute() {
 		JSONArray obj = new JSONArray();
-		Connector conn = new Connector();
+		//Connector conn = new Connector();
+		IConnect conn = new ConnectFactory().getConnector(ConnectType.MongoDB);
 		
 		if ((documents = conn.getDocuments(offset)) != null) {
 			for (Document doc : documents)

@@ -12,7 +12,10 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.json.simple.parser.ParseException;
 
-import data.Connector;
+import data.ConnectFactory;
+import data.ConnectType;
+import data.IConnect;
+import data.sql.Connector;
 import wrapper.User;
 
 /**
@@ -51,7 +54,8 @@ public class UpdateUserService extends Service {
 		
 		// at this point user have been extracted
 		// we connect to the database and update
-		Connector conn = new Connector();
+		//Connector conn = new Connector();
+		IConnect conn = new ConnectFactory().getConnector(ConnectType.MongoDB);
 		
 		if (conn.updateUser(user))
 			setResponse(200, "{\"success\": true}");

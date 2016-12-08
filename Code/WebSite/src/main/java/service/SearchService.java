@@ -11,7 +11,10 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.solr.client.solrj.SolrServerException;
 import org.json.simple.parser.ParseException;
 
-import data.Connector;
+import data.ConnectFactory;
+import data.ConnectType;
+import data.IConnect;
+import data.sql.Connector;
 import qa.RetrieveAndRankWrapper;
 import wrapper.History;
 import wrapper.SearchResult;
@@ -45,7 +48,7 @@ public class SearchService extends Service {
 		String query;
 		RetrieveAndRankWrapper ranker;
 		SearchResult result;
-		Connector conn;
+		IConnect conn;
 		
 		try {
 			query = request.getParameter("query");
@@ -55,8 +58,8 @@ public class SearchService extends Service {
 						"No search query specified"));
 			else {				
 				// add current search to history
-				conn = new Connector();
-				conn.addHistory(new History(null, query, null, user));
+				conn = new ConnectFactory().getConnector(ConnectType.MongoDB);
+				conn.addHistory(new History(query, user));
 				
 				ranker = new RetrieveAndRankWrapper();
 				result = ranker.searchSolr(query);				

@@ -1,0 +1,15 @@
+{
+    "conversion_target": "answer_units",
+	"pdf": {
+        "heading": {
+            "fonts": [
+				{"level": 1, "min_size": 13, "max_size": 18, "bold": true, "italic": true},
+				{"level": 2, "min_size": 13, "max_size": 15, "bold": true},
+                {"level": 3, "min_size": 10, "max_size": 12, "bold": true}
+            ]
+        }
+    },
+	"answer_units": {
+        "selector_tags": ["h1","h2","h3"]
+    }
+}

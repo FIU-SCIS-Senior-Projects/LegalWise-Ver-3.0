@@ -50,8 +50,8 @@ public class ResourceManager {
 		Scanner s;
 		
 		is = (new ResourceManager())
-				.getClass().getClassLoader().getResourceAsStream("res/" + 
-    			packageName + "/" + resourceName);		
+				.getClass().getClassLoader().getResourceAsStream("res" + File.separator + 
+    			packageName + File.separator + resourceName);		
 		s = new Scanner(is);
 		s.useDelimiter("\\A");		
 		r = s.hasNext() ? s.next() : null;

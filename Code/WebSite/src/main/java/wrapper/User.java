@@ -5,26 +5,54 @@ import java.util.Date;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
+import org.mongodb.morphia.annotations.Entity;
+import org.mongodb.morphia.annotations.Field;
+import org.mongodb.morphia.annotations.Id;
+import org.mongodb.morphia.annotations.Index;
+import org.mongodb.morphia.annotations.Indexes;
+import org.mongodb.morphia.annotations.Property;
 
 /**
  * 
- * @author Fernando
+ * @author Michel Roger
  *
  */
+
+@Entity("User")
+@Indexes(
+    @Index(fields = @Field("email"))
+)
+
 public class User {
+	@Id
 	private int userId;
+	@Property
 	private String firstName;
+	@Property
 	private String lastName;
+	@Property
 	private String companyName;
+	@Property
 	private String email;
+	@Property
 	private UserType type;
+	@Property
 	private Date createdOn;
+	@Property
 	private boolean isTrial;
+	@Property
 	private int trialDuration; // in days
+	@Property
+	private String password;
+	@Property
 	private boolean isLocked;
+	@Property
 	private Date modifiedOn;
+	@Property
 	private boolean isActive;
-	
+	@Property
+	private String hashPass;
+
 	/**
 	 * Base constructor, no params
 	 */
@@ -71,7 +99,26 @@ public class User {
 		setModifiedOn(modifiedOn);
 		setActive(isActive);
 	}
-
+	
+	public User(String firstName,
+			String lastName,
+			String companyName,
+			String email,
+			String password) {
+		setFirstName(firstName);
+		setLastName(lastName);
+		setCompanyName(companyName);
+		setEmail(email);
+		setPassword(password);
+		setType(type.REGULAR);
+		setCreatedOn(new Date());
+		setTrial(false);
+		setTrialDuration(0);
+		setLocked(false);
+		setModifiedOn(new Date());
+		setActive(true);
+	}
+	
 	/**
 	 * @return the id
 	 */
@@ -198,6 +245,15 @@ public class User {
 		this.trialDuration = trialDuration;
 	}
 	
+	
+	public String getPassword() {
+		return password;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
+	}
+
 	/**
 	 * @return whether this user is locked
 	 */
@@ -238,6 +294,15 @@ public class User {
 	 */
 	public void setActive(boolean isActive) {
 		this.isActive = isActive;
+	}
+	
+	
+	public String getHashPass() {
+		return hashPass;
+	}
+
+	public void setHashPass(String hashPass) {
+		this.hashPass = hashPass;
 	}
 	
 	/**

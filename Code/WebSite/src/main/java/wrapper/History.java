@@ -5,17 +5,36 @@ package wrapper;
 
 import java.util.Date;
 
+import org.bson.types.ObjectId;
 import org.json.simple.JSONObject;
+import org.mongodb.morphia.annotations.Entity;
+import org.mongodb.morphia.annotations.Field;
+import org.mongodb.morphia.annotations.Id;
+import org.mongodb.morphia.annotations.Index;
+import org.mongodb.morphia.annotations.Indexes;
+import org.mongodb.morphia.annotations.Property;
+import org.mongodb.morphia.annotations.Reference;
 
 /**
  * @author Fernando
  *
  */
+
+@Entity("History")
+@Indexes(
+    @Index(fields = @Field("user"))
+)
 public class History {
-	private Integer historyId;
+	@Id
+	private ObjectId hId;
+	@Property
 	private String searchText;
+	@Property
 	private Date performedOn;
+	@Reference(idOnly = true)
 	private User user;
+
+	private Integer historyId;
 	
 	/**
 	 * 
@@ -30,6 +49,14 @@ public class History {
 		this.searchText = searchText;
 		this.performedOn = performedOn;
 		this.user = user;
+	}
+	
+	public History(String searchText, User user){
+		this(0,searchText,new Date(), user);
+	}
+	
+	public History (){
+		
 	}
 
 	/**
@@ -66,7 +93,7 @@ public class History {
 	public void setHistoryId(Integer historyId) {
 		this.historyId = historyId;
 	}
-
+	
 	/**
 	 * @param searchText the searchText to set
 	 */

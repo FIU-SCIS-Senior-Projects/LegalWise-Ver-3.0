@@ -13,8 +13,11 @@ import org.apache.solr.client.solrj.SolrServerException;
 import org.json.simple.JSONArray;
 import org.json.simple.parser.ParseException;
 
+import data.ConnectFactory;
+import data.ConnectType;
+import data.IConnect;
+import data.sql.Connector;
 import qa.RetrieveAndRankWrapper;
-import data.Connector;
 import wrapper.History;
 import wrapper.User;
 
@@ -44,13 +47,13 @@ public class HistoryService extends Service {
 	 */
 	@Override
 	public void execute() {
-		Connector conn;
+		IConnect conn;
 		History[] history;
 		JSONArray arr;
 		Iterator<History> it;
 		
 		try {			
-			conn = new Connector();
+			conn = new ConnectFactory().getConnector(ConnectType.MongoDB);
 			history = conn.getHistory(user);
 			arr = new JSONArray();
 			

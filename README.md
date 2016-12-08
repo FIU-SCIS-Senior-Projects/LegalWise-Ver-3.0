@@ -1,6 +1,6 @@
-# LegalWise2
+#LegalWise Ver 3.0
 
-There are 5 folders for LegalWise2.0, and the directory structure is as follows:
+There are 5 folders for LegalWise3.0, and the directory structure is as follows:
 
 1. Code - all the code for this project.
 
@@ -8,6 +8,6 @@ There are 5 folders for LegalWise2.0, and the directory structure is as follows:
 
 3. Poster - Posters for each student.
 
-4. Presentation Slides - the introduction video of this LegalWise 2.0.
+4. Presentation Slides - the introduction video of this LegalWise 3.0.
 
 5. Videos - an index.html shows the link of all four videos.

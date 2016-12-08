@@ -15,12 +15,12 @@ import dispatch.ServiceDispatcher;
  */
 @WebServlet(urlPatterns = 
 	{"/public", "",
-	"/login", "/index", "/documents", "/users", "/profile", 
-	"/qa", "/logout", 
+	"/login", "/register","/index", "/documents", "/users", "/profile", 
+	"/qa", "/logout", "/passwordReset",
 	"/service/create", "/service/upload", "/service/users",
 	"/service/documents", "/service/download",
 	"/service/user/update",
-	"/service/search", "/service/qa",
+	"/service/search", "/service/qa", "/service/password",
 	"/service/history"})
 @MultipartConfig()
 public class Dispatcher extends HttpServlet {
@@ -56,6 +56,7 @@ public class Dispatcher extends HttpServlet {
 			case "/service/documents":
 			case "/service/download":
 			case "/service/history":
+			case "/service/password":
 				d = new ServiceDispatcher(path.substring(9));
 				break;
 			case "/login":
@@ -65,6 +66,7 @@ public class Dispatcher extends HttpServlet {
 			case "/profile":
 			case "/qa":
 			case "/logout":
+			case "/passwordreset":
 				d = new PageDispatcher(path);
 				break;
 			default:
@@ -93,9 +95,16 @@ public class Dispatcher extends HttpServlet {
 			case "/login":
 				d = new PageDispatcher("login");
 				break;
+			case "/register":
+				d = new PageDispatcher("register");
+				break;
+			case "/passwordreset":
+				d = new PageDispatcher("passwordreset");
+				break;
 			case "/service/upload":
 			case "/service/user/update":
 			case "/service/qa":	
+			case "/service/password":
 				d = new ServiceDispatcher(path.substring(9));
 				break;
 			default:

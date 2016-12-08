@@ -1,12 +1,8 @@
 applications:
-- path: target/JavaHelloWorldApp.war
+- path: target/LegalWise3.0.war
   memory: 512M
   instances: 1
   domain: mybluemix.net
-  name: LegalWise 2 UI
-  host: legalwise2ui
+  name: LegalWise3
+  host: legalwise3
   disk_quota: 1024M
-  buildpack: https://github.com/cloudfoundry/ibm-websphere-liberty-buildpack.git
-  env:
-    IBM_JVM_LICENSE: L-JWOD-9SYNCP
-    IBM_LIBERTY_LICENSE: L-MCAO-9SYMVC

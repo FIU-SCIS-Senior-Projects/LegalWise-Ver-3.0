@@ -7,8 +7,11 @@ import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import data.ConnectFactory;
+import data.ConnectType;
+import data.IConnect;
+import data.sql.Connector;
 import wrapper.File;
-import data.Connector;
 
 /**
  * Service in charge of fulfilling a download request
@@ -31,7 +34,7 @@ public class DownloadService extends Service {
 	@Override
 	public void execute() {
 		ServletOutputStream out;
-		Connector conn;
+		IConnect conn;
 		File file;
 		
 		try {
@@ -44,7 +47,7 @@ public class DownloadService extends Service {
 			return;
 		}
 		
-		conn = new Connector();
+		conn = new ConnectFactory().getConnector(ConnectType.MongoDB);
 		file = conn.getFile(fileId);
 		
 		// null file means the id was not found, or other

@@ -4,20 +4,51 @@
 package wrapper;
 
 import java.util.Date;
+import java.util.List;
 
+import org.bson.types.ObjectId;
 import org.json.simple.JSONObject;
+import org.mongodb.morphia.annotations.Embedded;
+import org.mongodb.morphia.annotations.Entity;
+import org.mongodb.morphia.annotations.Field;
+import org.mongodb.morphia.annotations.Id;
+import org.mongodb.morphia.annotations.Index;
+import org.mongodb.morphia.annotations.Indexes;
+import org.mongodb.morphia.annotations.Property;
+import org.mongodb.morphia.annotations.Reference;
 
 /**
  * @author Fernando
  *
  */
+
+@Entity("Document")
+@Indexes(
+    @Index(fields = {@Field("documentId"), @Field("user")})
+)
+
 public class Document {
+	@Id
+	private ObjectId id;
+	//this is for sql database
+	@Property
 	private Integer documentId;
+	@Property
 	private Date uploadedOn;
+	@Reference
 	private User uploadedBy;
+	@Embedded
 	private File file;
-	private String plainText;
+	@Embedded
+	private List<SolrDoc> parts;
+	@Property
 	private DocumentStatus status;
+	
+	private String plainText;
+	
+	public Document(){
+		
+	}
 	
 	/**
 	 * Main constructor
@@ -36,6 +67,18 @@ public class Document {
 		this.file = file;
 		this.plainText = plainText;
 		this.status = status;
+	}
+	
+	public Document(Integer documentId, Date uploadedOn,
+			User uploadedBy, File file, 
+			String plainText, DocumentStatus status, List<SolrDoc> parts) {
+		this.documentId = documentId;
+		this.uploadedOn = uploadedOn;
+		this.uploadedBy = uploadedBy;
+		this.file = file;
+		this.plainText = plainText;
+		this.status = status;
+		this.parts = parts;
 	}
 
 	/**
@@ -123,6 +166,14 @@ public class Document {
 		this.status = status;
 	}
 	
+	public List<SolrDoc> getParts() {
+		return parts;
+	}
+
+	public void setParts(List<SolrDoc> parts) {
+		this.parts = parts;
+	}
+
 	/**
 	 * 
 	 * @return

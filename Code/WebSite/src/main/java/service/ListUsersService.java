@@ -5,8 +5,11 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.json.simple.JSONArray;
 
+import data.ConnectFactory;
+import data.ConnectType;
+import data.IConnect;
+import data.sql.Connector;
 import wrapper.User;
-import data.Connector;
 
 /**
  * 
@@ -28,7 +31,8 @@ public class ListUsersService extends Service {
 	@Override
 	public void execute() {
 		JSONArray obj = new JSONArray();
-		Connector conn = new Connector();
+	//	Connector conn = new Connector();
+		IConnect conn = new ConnectFactory().getConnector(ConnectType.MongoDB);
 		User[] users;
 		int offset = 0;
 		String textFilter = request.getParameter("textFilter");

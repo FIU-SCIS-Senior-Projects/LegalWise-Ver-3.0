@@ -4,16 +4,26 @@
 package wrapper;
 
 import org.json.simple.JSONObject;
+import org.mongodb.morphia.annotations.Embedded;
+import org.mongodb.morphia.annotations.Id;
+import org.mongodb.morphia.annotations.Property;
 
 /**
  * @author Fernando
  *
  */
+@Embedded("File")
+
 public class File {
+	@Id
 	private Integer fileId;
+	@Property
 	private String name;
+	@Property
 	private Long size;
+	@Property
 	private String mimeType;
+	@Property
 	private byte[] body;
 	
 	/**

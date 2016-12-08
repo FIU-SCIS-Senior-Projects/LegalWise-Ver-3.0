@@ -15,6 +15,7 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
+import com.google.gson.JsonObject;
 import com.ibm.watson.developer_cloud.document_conversion.v1.DocumentConversion;
 import com.ibm.watson.developer_cloud.document_conversion.v1.model.Answers;
 import res.ResourceManager;
@@ -24,7 +25,8 @@ import res.ResourceManager;
  *
  */
 public class DocumentConverter {
-	private static String ENV_NAME = "VCAP_SERVICES";
+//	private static String ENV_NAME = "VCAP_SERVICES";
+	private static String ENV_NAME = "ENVIROMENT";
 	private static String SERVICE_KEY = "document_conversion";
 	
 	private String username;
@@ -75,6 +77,16 @@ public class DocumentConverter {
 		return service.convertDocumentToAnswer(file);
 	}
 
+	/**
+	 * Convert the specified file into text
+	 * @param file
+	 * @return Answers
+	 * @author Michel
+	 */
+	public Answers convertToAnswers(File file, String mediaType, JsonObject config) {
+		return service.convertDocumentToAnswer(file, mediaType, config);
+	}
+	
 	/**
 	 * Extracts the service credentials from the environment variable
 	 * @throws ParseException

@@ -336,7 +336,7 @@ public class XmlNode {
 		XMLInputFactory factory = XMLInputFactory.newInstance();
 		XMLStreamReader reader = 
 			factory.createXMLStreamReader(new StringReader(xml));
-		
+
 		XmlNode node = this;
 		XmlNode next;
 		String nodeText;
@@ -359,8 +359,9 @@ public class XmlNode {
 					break;
 				case XMLStreamConstants.CHARACTERS:
 					nodeText = reader.getText().trim();
+					String tmp = node.getValue() == null ? "":node.getValue();
 					if (!nodeText.isEmpty())
-						node.value = reader.getText();
+						node.value = tmp+reader.getText();
 					break;
 				case XMLStreamConstants.END_ELEMENT:
 					node = node.parent;

@@ -2,7 +2,10 @@ package wrapper;
 
 import java.util.Map;
 
-import data.Connector;
+import data.ConnectFactory;
+import data.ConnectType;
+import data.IConnect;
+import data.sql.Connector;
 
 /**
  * Class containing settings of the application
@@ -16,13 +19,16 @@ public class Settings {
 	// map with all settings	
 	private Map<String, String> map;
 	
+	//Connector
+	private IConnect conn;
+	
 	/**
 	 * Constructor
 	 * @author 	Fernando Gomez
 	 * @date	3/10/2016
 	 */
 	private Settings() {
-		Connector conn = new Connector();
+		conn = new ConnectFactory().getConnector(ConnectType.MongoDB);
 		map = conn.getSettings();
 		
 		if (map == null)
@@ -66,7 +72,6 @@ public class Settings {
 	 * @param value
 	 */
 	public void save() {
-		Connector conn = new Connector();
 		if (!conn.saveSettings(map))
 			throw new RuntimeException(conn.getLastError()); 
 	}
